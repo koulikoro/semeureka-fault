@@ -23,4 +23,9 @@ public class VoltageController {
 		model.addAttribute("voltages", voltages);
 		return "/voltage/voltage";
 	}
+
+	@RequestMapping(value = "/tree")
+	public String find() {
+		return "/voltage/tree";
+	}
 }

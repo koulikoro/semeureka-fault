@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.semeureka.fault.entity.Device;
 import com.semeureka.fault.entity.Device.Phase;
 import com.semeureka.fault.entity.Group;
+import com.semeureka.fault.entity.Line;
 import com.semeureka.fault.repository.GroupRepository;
 import com.semeureka.fault.service.GroupService;
 
@@ -26,6 +27,9 @@ public class GroupServiceImpl implements GroupService {
 		for (Entry<Phase, Device> entry : group.getDevices().entrySet()) {
 			entry.getValue().setGroup(group);
 			entry.getValue().setPhase(entry.getKey());
+		}
+		if (group.getParent() != null && group.getParent().getId() == null) {
+			group.setParent(null);
 		}
 		group = groupRepository.save(group);
 		return group;
@@ -49,5 +53,10 @@ public class GroupServiceImpl implements GroupService {
 	@Override
 	public List<Group> findAll(Group example) {
 		return groupRepository.findAll(byExample(example));
+	}
+	
+	@Override
+	public List<Group> findByLine(Line line) {
+		return groupRepository.findByLine(line);
 	}
 }

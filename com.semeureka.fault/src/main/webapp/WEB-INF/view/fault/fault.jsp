@@ -10,7 +10,7 @@
 	<table class="table table-striped table-bordered table-condensed">
 		<tr>
 			<th class="col-xs-1">序号</th>
-			<th>安装位置</th>
+			<th>位置</th>
 			<th>组号</th>
 			<th>故障类型</th>
 			<th>相别</th>

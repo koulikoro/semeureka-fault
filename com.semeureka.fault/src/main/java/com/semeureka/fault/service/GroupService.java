@@ -3,6 +3,7 @@ package com.semeureka.fault.service;
 import java.util.List;
 
 import com.semeureka.fault.entity.Group;
+import com.semeureka.fault.entity.Line;
 
 public interface GroupService {
 	Group save(Group group);
@@ -14,4 +15,6 @@ public interface GroupService {
 	List<Group> findAll();
 
 	List<Group> findAll(Group group);
+
+	List<Group> findByLine(Line line);
 }

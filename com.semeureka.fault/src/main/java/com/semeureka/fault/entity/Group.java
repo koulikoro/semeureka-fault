@@ -1,6 +1,7 @@
 package com.semeureka.fault.entity;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,8 +31,8 @@ import com.semeureka.fault.entity.Device.Phase;
 @Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 @JsonIgnoreProperties({ "hibernateLazyInitializer", "devices", "children", "parent" })
 public class Group implements Serializable {
-	public enum Model {
-		I, II, III;
+	public enum GroupType {
+		FAULT_I, FAULT_II, FAULT_III;
 	}
 
 	@Id
@@ -39,8 +40,8 @@ public class Group implements Serializable {
 	private Integer id;
 	@Column(name = "GROUP_HOSTCODE")
 	private String hostCode;
-	@Column(name = "GROUP_MODEL")
-	private Model model;
+	@Column(name = "GROUP_TYPE")
+	private GroupType groupType;
 	@Column(name = "GROUP_NUMBER")
 	private Integer number;
 	@Column(name = "GROUP_NAME")
@@ -75,12 +76,12 @@ public class Group implements Serializable {
 		this.hostCode = hostCode;
 	}
 
-	public Model getModel() {
-		return model;
+	public GroupType getGroupType() {
+		return groupType;
 	}
 
-	public void setModel(Model model) {
-		this.model = model;
+	public void setGroupType(GroupType groupType) {
+		this.groupType = groupType;
 	}
 
 	public Integer getNumber() {
@@ -117,6 +118,19 @@ public class Group implements Serializable {
 
 	public Set<Group> getChildren() {
 		return children;
+	}
+
+	public Set<Group> getChildren(Set<Group> groups) {
+		if (groups == null) {
+			groups = new HashSet<Group>();
+		}
+		groups.add(this);
+		if (children != null) {
+			for (Group group : children) {
+				group.getChildren(groups);
+			}
+		}
+		return groups;
 	}
 
 	public void setChildren(Set<Group> children) {

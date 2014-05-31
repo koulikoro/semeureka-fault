@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.QueryHints;
 
 import com.semeureka.fault.entity.Group;
+import com.semeureka.fault.entity.Line;
 
 public interface GroupRepository extends JpaRepository<Group, Integer>,
 		JpaSpecificationExecutor<Group> {
@@ -20,4 +21,7 @@ public interface GroupRepository extends JpaRepository<Group, Integer>,
 	@Override
 	@QueryHints(@QueryHint(name = "org.hibernate.cacheable", value = "true"))
 	public List<Group> findAll(Specification<Group> spec);
+
+	@QueryHints(@QueryHint(name = "org.hibernate.cacheable", value = "true"))
+	public List<Group> findByLine(Line line);
 }

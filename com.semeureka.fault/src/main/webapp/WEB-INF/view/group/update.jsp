@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <div class="modal-header panel-heading">
 	<button type="button" class="close" data-dismiss="modal">&times;</button>
 	<h4 class="modal-title">设备信息</h4>
@@ -7,10 +8,45 @@
 <form id="group-update" action="${ctx}/group/${group.id}" method="post" class="form-horizontal">
 	<div class="modal-body">
 		<div class="form-group">
-			<label class="col-md-2 control-label">名称</label>
+			<label class="col-md-2 control-label">位置</label>
 			<div class="col-md-10">
 				<input type="text" name="location" value="${group.location}" class="form-control" required
 					maxlength="15" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">组号</label>
+			<div class="col-md-4">
+				<input type="text" name="number" value="${group.number}" class="form-control" required
+					pattern="^\d+$" />
+			</div>
+			<label class="col-md-2 control-label">设备类型</label>
+			<div class="col-md-4">
+				<select name="groupType" class="form-control" required>
+					<c:forEach items="${groupTypes}" var="groupType">
+						<option value="${groupType}" ${group.groupType eq groupType ? 'selected' : ''}><fmt:message
+								key="${groupType}" /></option>
+					</c:forEach>
+				</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-md-2 control-label">所属线路</label>
+			<div class="col-md-4">
+				<select name="line.id" class="form-control" required>
+					<c:forEach items="${lineService.findAll()}" var="line">
+						<option value="${line.id}" ${group.line eq line ? 'selected' : ''}>${line.name}</option>
+					</c:forEach>
+				</select>
+			</div>
+			<label class="col-md-2 control-label">前部设备</label>
+			<div class="col-md-4">
+				<select name="parent.id" class="form-control">
+					<option value="">无</option>
+					<c:forEach items="${parents}" var="parent">
+						<option value="${parent.id}" ${group.parent eq parent ? 'selected' : ''}>${group.location}</option>
+					</c:forEach>
+				</select>
 			</div>
 		</div>
 		<div class="form-group">
@@ -33,16 +69,6 @@
 						</div>
 					</c:forEach>
 				</div>
-			</div>
-		</div>
-		<div class="form-group">
-			<label class="col-md-2 control-label">所属线路</label>
-			<div class="col-md-10">
-				<select name="line.id" class="form-control" required>
-					<c:forEach items="${lineService.findAll()}" var="line">
-						<option value="${line.id}" ${group.line eq line ? 'selected' : ''}>${line.name}</option>
-					</c:forEach>
-				</select>
 			</div>
 		</div>
 	</div>

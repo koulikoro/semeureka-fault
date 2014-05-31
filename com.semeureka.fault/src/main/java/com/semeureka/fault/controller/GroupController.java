@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.semeureka.fault.entity.Device.Phase;
 import com.semeureka.fault.entity.Group;
+import com.semeureka.fault.entity.Group.GroupType;
 import com.semeureka.fault.service.GroupService;
 
 @Controller
@@ -44,6 +45,10 @@ public class GroupController {
 		Group group = groupService.findOne(id);
 		model.addAttribute("group", group);
 		model.addAttribute("phases", Phase.values());
+		model.addAttribute("groupTypes", GroupType.values());
+		List<Group> parents = groupService.findByLine(group.getLine());
+		parents.removeAll(group.getChildren(null));
+		model.addAttribute("parents", parents);
 		return "/group/update";
 	}
 
@@ -52,6 +57,7 @@ public class GroupController {
 		List<Group> groups = groupService.findAll();
 		model.addAttribute("groups", groups);
 		model.addAttribute("phases", Phase.values());
+		model.addAttribute("groupTypes", GroupType.values());
 		return "/group/group";
 	}
 
