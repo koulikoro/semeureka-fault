@@ -3,7 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tt"%>
 <tt:frame>
-	<form id="query" action="${ctx}/voltage" class="form-inline pull-right">
+	<form id="query" action="${ctx}/current" class="form-inline pull-right">
 		<jsp:include page="/WEB-INF/view/voltage/select.jsp" />
 		<button type="submit" class="btn btn-default btn-sm">查询</button>
 	</form>
@@ -13,19 +13,21 @@
 			<th>安装位置</th>
 			<th>组号</th>
 			<th>相别</th>
-			<th>自检电压(V)</th>
+			<th>电流(A)</th>
+			<th>温度(&deg;)</th>
 			<th>接收时间</th>
 		</tr>
-		<c:forEach items="${voltages.content}" var="voltage" varStatus="status">
+		<c:forEach items="${currents.content}" var="current" varStatus="status">
 			<tr>
-				<td>${voltages.number * voltages.size + status.count}</td>
-				<td>${voltage.group.location}</td>
-				<td>${voltage.group.number}</td>
-				<td>${voltage.phase}</td>
-				<td>${voltage.value}</td>
-				<td><fmt:formatDate value="${voltage.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+				<td>${currents.number * currents.size + status.count}</td>
+				<td>${current.group.location}</td>
+				<td>${current.group.number}</td>
+				<td>${current.phase}</td>
+				<td>${current.value}</td>
+				<td>${current.temperature}</td>
+				<td><fmt:formatDate value="${current.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 			</tr>
 		</c:forEach>
 	</table>
-	<tt:page page="${voltages}" form="#query" />
+	<tt:page page="${currents}" form="#query" />
 </tt:frame>
