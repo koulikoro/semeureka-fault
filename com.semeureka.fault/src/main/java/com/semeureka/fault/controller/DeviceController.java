@@ -15,6 +15,11 @@ public class DeviceController {
 	@Autowired
 	private DeviceService deviceService;
 
+	@RequestMapping(value = "")
+	public String all() {
+		return "/device/device";
+	}
+
 	@ResponseBody
 	@RequestMapping(value = "/contains")
 	public boolean contains(Group group) { // 检查一个终端编码是否已经包含在其它分组
