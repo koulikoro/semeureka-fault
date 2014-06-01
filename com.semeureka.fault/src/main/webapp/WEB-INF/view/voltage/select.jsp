@@ -12,7 +12,7 @@
 	<select name="group.id" class="form-control input-sm">
 		<option value="">所有设备</option>
 		<c:forEach items="${groupService.findAll(example.group)}" var="group">
-			<option value="${group.id}" ${group eq example.group ? 'selected' : ''} title="${group.number}">${group.location}</option>
+			<option value="${group.id}" ${group eq example.group ? 'selected' : ''}>${group.location} [${group.number}]</option>
 		</c:forEach>
 	</select>
 </div>
