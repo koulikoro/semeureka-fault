@@ -4,85 +4,85 @@
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tt"%>
 <tt:frame>
 	<ul class="nav nav-tabs">
-		<li><a href="#acceptor" data-toggle="tab">主站模式</a></li>
-		<li><a href="#connector" data-toggle="tab">子站模式</a></li>
+		<li><a href="#server" data-toggle="tab">主站模式</a></li>
+		<li><a href="#client" data-toggle="tab">子站模式</a></li>
 		<li><a href="#serial" data-toggle="tab">串口模式</a></li>
 	</ul>
 	<div class="tab-content">
-		<div id="acceptor" class="tab-pane fade">
-			<form action="${ctx}/mina/acceptor" method="post" class="form-horizontal">
+		<div id="server" class="tab-pane fade">
+			<form action="${ctx}/mina/server" method="post" class="form-horizontal">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">运行状态</label>
-					<p class="col-sm-4 form-control-static ${acceptor.active ? 'text-success' : 'text-warning' }">${acceptor.active ? '已启动' : '已停止'}
-						<c:if test="${!empty acceptorError}">
-							<span class="glyphicon glyphicon-warning-sign" title="${acceptorError.message}"></span>
+					<p class="col-sm-4 form-control-static ${server.active ? 'text-success' : 'text-warning' }">${server.active ? '已启动' : '已停止'}
+						<c:if test="${!empty serverError}">
+							<span class="glyphicon glyphicon-warning-sign" title="${serverError.message}"></span>
 						</c:if>
 					</p>
 					<label class="col-sm-2 control-label">连接数</label>
-					<p class="col-sm-4 form-control-static">${acceptor.managedSessionCount}</p>
+					<p class="col-sm-4 form-control-static">${server.managedSessionCount}</p>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">接收数据</label>
 					<p class="col-sm-4 form-control-static">
-						<fmt:formatNumber value="${acceptor.statistics.readBytes / 1024}" pattern="#,##0.00KB" />
+						<fmt:formatNumber value="${server.statistics.readBytes / 1024}" pattern="#,##0.00KB" />
 					</p>
 					<label class="col-sm-2 control-label">发送数据</label>
 					<p class="col-sm-4 form-control-static">
-						<fmt:formatNumber value="${acceptor.statistics.writtenBytes / 1024}" pattern="#,##0.00KB" />
+						<fmt:formatNumber value="${server.statistics.writtenBytes / 1024}" pattern="#,##0.00KB" />
 					</p>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">监听地址</label>
 					<div class="col-sm-4">
-						<c:set var="address" value="${acceptor.defaultLocalAddress}" />
-						<input type="text" name="defaultAddress" ${acceptor.active ? 'readonly' : '' }
+						<c:set var="address" value="${server.defaultLocalAddress}" />
+						<input type="text" name="address" ${server.active ? 'readonly' : '' }
 							value="${address.hostName}${empty address ? '' : ':'}${address.port}" class="form-control"
 							placeholder="127.0.0.1:8811" required pattern="^\d+\.\d+\.\d+\.\d+:\d+$">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<a  href="${ctx}/mina?tab=acceptor" class="btn btn-default">刷新</a>
-						<button type="submit" class="btn btn-primary">${acceptor.active ? '停止' : '启动'}</button>
+						<a href="${ctx}/mina?tab=server" class="btn btn-default">刷新</a>
+						<button type="submit" class="btn btn-primary">${server.active ? '停止' : '启动'}</button>
 					</div>
 				</div>
 			</form>
 		</div>
-		<div id="connector" class="tab-pane fade" id="connector">
-			<form action="${ctx}/mina/connector" method="post" class="form-horizontal">
+		<div id="client" class="tab-pane fade" id="client">
+			<form action="${ctx}/mina/client" method="post" class="form-horizontal">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">运行状态</label>
-					<p class="col-sm-4 form-control-static ${connector.active ? 'text-success' : 'text-warning' }">${connector.active ? '已启动' : '已停止'}
-						<c:if test="${!empty connectorError}">
-							<span class="glyphicon glyphicon-warning-sign" title="${connectorError.message}"></span>
+					<p class="col-sm-4 form-control-static ${client.active ? 'text-success' : 'text-warning' }">${client.active ? '已启动' : '已停止'}
+						<c:if test="${!empty clientError}">
+							<span class="glyphicon glyphicon-warning-sign" title="${clientError.message}"></span>
 						</c:if>
 					</p>
 					<label class="col-sm-2 control-label">连接数</label>
-					<p class="col-sm-4 form-control-static">${connector.managedSessionCount}</p>
+					<p class="col-sm-4 form-control-static">${client.managedSessionCount}</p>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">接收数据</label>
 					<p class="col-sm-4 form-control-static">
-						<fmt:formatNumber value="${connector.statistics.readBytes / 1024}" pattern="#,##0.00KB" />
+						<fmt:formatNumber value="${client.statistics.readBytes / 1024}" pattern="#,##0.00KB" />
 					</p>
 					<label class="col-sm-2 control-label">发送数据</label>
 					<p class="col-sm-4 form-control-static">
-						<fmt:formatNumber value="${connector.statistics.writtenBytes / 1024}" pattern="#,##0.00KB" />
+						<fmt:formatNumber value="${client.statistics.writtenBytes / 1024}" pattern="#,##0.00KB" />
 					</p>
 				</div>
 				<div class="form-group">
 					<label class="col-sm-2 control-label">连接地址</label>
 					<div class="col-sm-4">
-						<c:set var="address" value="${connector.defaultRemoteAddress}" />
-						<input type="text" name="defaultAddress" ${connector.active ? 'readonly' : '' }
+						<c:set var="address" value="${client.defaultRemoteAddress}" />
+						<input type="text" name="address" ${client.active ? 'readonly' : '' }
 							value="${address.hostName}${empty address ? '' : ':'}${address.port}" class="form-control"
 							placeholder="127.0.0.1:8811" required pattern="^\d+\.\d+\.\d+\.\d+:\d+$">
 					</div>
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<a  href="${ctx}/mina?tab=connector" class="btn btn-default">刷新</a>
-						<button type="submit" class="btn btn-primary">${connector.active ? '停止' : '启动'}</button>
+						<a href="${ctx}/mina?tab=client" class="btn btn-default">刷新</a>
+						<button type="submit" class="btn btn-primary">${client.active ? '停止' : '启动'}</button>
 					</div>
 				</div>
 			</form>
@@ -113,8 +113,7 @@
 					<label class="col-sm-2 control-label">串口地址</label>
 					<div class="col-sm-4">
 						<c:set var="address" value="${serial.defaultRemoteAddress}" />
-						<select name="defaultAddress" ${serial.active ? 'disabled' : '' } class="form-control"
-							required>
+						<select name="address" ${serial.active ? 'readonly' : '' } class="form-control" required>
 							<c:forEach items="${commPosts}" var="commPost">
 								<option value="${commPost.name}" ${commPost.name eq address.name ? 'selected' : ''}>${commPost.name}</option>
 							</c:forEach>
@@ -123,20 +122,20 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<a  href="${ctx}/mina?tab=serial" class="btn btn-default">刷新</a>
+						<a href="${ctx}/mina?tab=serial" class="btn btn-default">刷新</a>
 						<button type="submit" class="btn btn-primary">${serial.active ? '停止' : '启动'}</button>
 					</div>
 				</div>
 			</form>
 		</div>
 	</div>
-	<c:set var="tab" value="${empty param.tab ? 'acceptor' : param.tab}" />
+	<c:set var="tab" value="${empty param.tab ? 'server' : param.tab}" />
 	<script type="text/javascript">
 		$(function() {
 			$('.nav-tabs a[href="#${tab}"]').tab('show');
 		});
-		$("#acceptor form").validate();
-		$("#connector form").validate();
+		$("#server form").validate();
+		$("#client form").validate();
 		$("#serial form").validate();
 	</script>
 </tt:frame>

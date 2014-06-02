@@ -3,74 +3,63 @@ package com.semeureka.fault.controller;
 import java.io.IOException;
 import java.net.SocketAddress;
 
-import org.apache.mina.core.service.IoAcceptor;
-import org.apache.mina.core.service.IoConnector;
-import org.apache.mina.transport.serial.SerialAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.semeureka.fault.mina.MinalService;
-import com.semeureka.frame.misc.SocketAddressEditor;
+import com.semeureka.fault.mina.MinaService;
 
 @Controller
 @RequestMapping("/mina")
 public class MinaController {
 	@Autowired
-	private MinalService minalService;
-
-	@InitBinder
-	public void initBinder(WebDataBinder binder) {
-		binder.registerCustomEditor(SocketAddress.class, new SocketAddressEditor());
-	}
+	private MinaService minaService;
 
 	@RequestMapping(value = "")
 	public String findAll(Model model) {
-		model.addAttribute("acceptor", minalService.getAcceptor());
-		model.addAttribute("connector", minalService.getConnector());
-		model.addAttribute("serial", minalService.getSerial());
-		model.addAttribute("commPosts", minalService.getCommPorts());
+		model.addAttribute("server", minaService.getServer());
+		model.addAttribute("client", minaService.getClient());
+		model.addAttribute("serial", minaService.getSerial());
+		model.addAttribute("commPosts", minaService.getCommPorts());
 		return "/mina/mina";
 	}
 
-	@RequestMapping(value = "/acceptor", method = RequestMethod.POST)
-	public String acceptorToggle(@RequestParam SocketAddress defaultAddress,
-			RedirectAttributes model) {
-		IoAcceptor acceptor = minalService.getAcceptor();
+	@RequestMapping(value = "/server", method = RequestMethod.POST)
+	public String serverToggle(@RequestParam SocketAddress address, RedirectAttributes model) {
+		minaService.setServerAddress(address);
+		minaService.setServerStart(!minaService.getServer().isActive());
 		try {
-			minalService.toggle(acceptor, defaultAddress);
+			minaService.toggleServer();
 		} catch (IOException e) {
-			model.addFlashAttribute("acceptorError", e);
+			model.addFlashAttribute("serverError", e);
 		}
-		model.addAttribute("tab", "acceptor");
+		model.addAttribute("tab", "server");
 		return "redirect:/mina";
 	}
 
-	@RequestMapping(value = "/connector", method = RequestMethod.POST)
-	public String connectorToggle(@RequestParam SocketAddress defaultAddress,
-			RedirectAttributes model) {
-		IoConnector connector = minalService.getConnector();
+	@RequestMapping(value = "/client", method = RequestMethod.POST)
+	public String clientToggle(@RequestParam SocketAddress address, RedirectAttributes model) {
+		minaService.setClientAddress(address);
+		minaService.setClientStart(!minaService.getClient().isActive());
 		try {
-			minalService.toggle(connector, defaultAddress);
+			minaService.toggleClient();
 		} catch (IOException e) {
-			model.addFlashAttribute("connectorError", e);
+			model.addFlashAttribute("clientError", e);
 		}
-		model.addAttribute("tab", "connector");
+		model.addAttribute("tab", "client");
 		return "redirect:/mina";
 	}
 
 	@RequestMapping(value = "/serial", method = RequestMethod.POST)
-	public String serialToggle(@RequestParam(required = false) SerialAddress defaultAddress,
-			RedirectAttributes model) {
-		IoConnector serial = minalService.getSerial();
+	public String serialToggle(@RequestParam SocketAddress address, RedirectAttributes model) {
+		minaService.setSerialAddress(address);
+		minaService.setSerialStart(!minaService.getSerial().isActive());
 		try {
-			minalService.toggle(serial, defaultAddress);
+			minaService.toggleSerial();
 		} catch (IOException e) {
 			model.addFlashAttribute("serialError", e);
 		}
