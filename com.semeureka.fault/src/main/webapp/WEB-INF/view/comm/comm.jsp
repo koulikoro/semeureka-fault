@@ -10,11 +10,11 @@
 	</ul>
 	<div class="tab-content">
 		<div id="server" class="tab-pane fade">
-			<form action="${ctx}/mina/server" method="post" class="form-horizontal">
+			<form action="${ctx}/comm/server/start" method="post" class="form-horizontal">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">运行状态</label>
 					<p class="col-sm-4 form-control-static ${server.active ? 'text-success' : 'text-warning' }">
-						${server.active ? '已启动' : (serverStart ? '启动失败, 稍后自动重试' : '已停止')}
+						${server.active ? '已启动' : (serverStart ? '启动失败, 稍后将自动重启' : '已停止')}
 						<c:if test="${!empty serverError}">
 							<span class="glyphicon glyphicon-warning-sign" title="${serverError.message}"></span>
 						</c:if>
@@ -43,18 +43,21 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<a href="${ctx}/mina?tab=server" class="btn btn-default">刷新</a>
-						<button type="submit" class="btn btn-primary">${server.active ? '停止' : '启动'}</button>
+						<button type="submit" class="btn btn-primary">
+							<span class="glyphicon glyphicon-play"></span> 启动
+						</button>
+						<a href="${ctx}/comm/server/stop" class="btn btn-primary"><span
+							class="glyphicon glyphicon-stop"></span> 停止</a>
 					</div>
 				</div>
 			</form>
 		</div>
 		<div id="client" class="tab-pane fade" id="client">
-			<form action="${ctx}/mina/client" method="post" class="form-horizontal">
+			<form action="${ctx}/comm/client/start" method="post" class="form-horizontal">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">运行状态</label>
 					<p class="col-sm-4 form-control-static ${client.active ? 'text-success' : 'text-warning' }">
-						${client.active ? '已启动' : (clientStart ? '启动失败, 稍后自动重试' : '已停止')}
+						${client.active ? '已启动' : (clientStart ? '启动失败, 稍后将自动重启' : '已停止')}
 						<c:if test="${!empty clientError}">
 							<span class="glyphicon glyphicon-warning-sign" title="${clientError.message}"></span>
 						</c:if>
@@ -83,18 +86,21 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<a href="${ctx}/mina?tab=client" class="btn btn-default">刷新</a>
-						<button type="submit" class="btn btn-primary">${client.active ? '停止' : '启动'}</button>
+						<button type="submit" class="btn btn-primary">
+							<span class="glyphicon glyphicon-play"></span> 启动
+						</button>
+						<a href="${ctx}/comm/client/stop" class="btn btn-primary"><span
+							class="glyphicon glyphicon-stop"></span> 停止</a>
 					</div>
 				</div>
 			</form>
 		</div>
 		<div id="serial" class="tab-pane fade">
-			<form action="${ctx}/mina/serial" method="post" class="form-horizontal">
+			<form action="${ctx}/comm/serial/start" method="post" class="form-horizontal">
 				<div class="form-group">
 					<label class="col-sm-2 control-label">运行状态</label>
 					<p class="col-sm-4 form-control-static ${serial.active ? 'text-success' : 'text-warning' }">
-						${serial.active ? '已启动' : (serialStart ? '启动失败, 稍后自动重试' : '已停止')}
+						${serial.active ? '已启动' : (serialStart ? '启动失败, 稍后将自动重启' : '已停止')}
 						<c:if test="${!empty serialError}">
 							<span class="glyphicon glyphicon-warning-sign" title="${serialError.message}"></span>
 						</c:if>
@@ -125,8 +131,11 @@
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
-						<a href="${ctx}/mina?tab=serial" class="btn btn-default">刷新</a>
-						<button type="submit" class="btn btn-primary">${serial.active ? '停止' : '启动'}</button>
+						<button type="submit" class="btn btn-primary">
+							<span class="glyphicon glyphicon-play"></span> 启动
+						</button>
+						<a href="${ctx}/comm/serial/stop" class="btn btn-primary"><span
+							class="glyphicon glyphicon-stop"></span> 停止</a>
 					</div>
 				</div>
 			</form>

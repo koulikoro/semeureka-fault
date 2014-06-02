@@ -101,7 +101,7 @@ public class CommSupport {
 			server.setHandler(new IoHandlerAdapter()); // TODO
 			server.bind();
 			logger.info("Start server {} success", server.getDefaultLocalAddress());
-		} else if (server.isActive()) {
+		} else if (!serverStart && server.isActive()) {
 			server.unbind();
 			logger.info("Stop server {} success", server.getDefaultLocalAddress());
 		}
@@ -116,7 +116,7 @@ public class CommSupport {
 				throw new ConnectException("Connection timed out: connect");
 			}
 			logger.info("Start client {} success", client.getDefaultRemoteAddress());
-		} else if (client.isActive()) {
+		} else if (!clientStart && client.isActive()) {
 			Iterator<IoSession> iterator = client.getManagedSessions().values().iterator();
 			while (iterator.hasNext()) {
 				iterator.next().close(true);
@@ -134,7 +134,7 @@ public class CommSupport {
 				throw new ConnectException("Connection timed out: connect");
 			}
 			logger.info("Start serial {} success", serial.getDefaultRemoteAddress());
-		} else if (serial.isActive()) {
+		} else if (!serialStart && serial.isActive()) {
 			Iterator<IoSession> iterator = serial.getManagedSessions().values().iterator();
 			while (iterator.hasNext()) {
 				iterator.next().close(true);
