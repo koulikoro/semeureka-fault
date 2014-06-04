@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -14,6 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -21,6 +23,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.semeureka.fault.entity.Device.Phase;
 import com.semeureka.fault.entity.Warn.WarnType;
+import com.semeureka.frame.entity.Alert;
 
 @Entity
 @Table(name = "T_FAULT_FAULT")
@@ -42,6 +45,9 @@ public class Fault implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATE_TIME")
 	private Date createTime;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "ALERT_ID")
+	private Alert alert;
 
 	public Integer getId() {
 		return id;
@@ -81,5 +87,13 @@ public class Fault implements Serializable {
 
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
+	}
+
+	public Alert getAlert() {
+		return alert;
+	}
+
+	public void setAlert(Alert alert) {
+		this.alert = alert;
 	}
 }

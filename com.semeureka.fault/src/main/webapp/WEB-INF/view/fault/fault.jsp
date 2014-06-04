@@ -15,6 +15,7 @@
 			<th>故障类型</th>
 			<th>相别</th>
 			<th>接收时间</th>
+			<th>操作</th>
 		</tr>
 		<c:forEach items="${faults.content}" var="fault" varStatus="status">
 			<tr>
@@ -24,8 +25,16 @@
 				<td><fmt:message key="${fault.warnType}" /></td>
 				<td>${fault.phases}</td>
 				<td><fmt:formatDate value="${fault.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+				<td><a href="${ctx}/fault/${fault.id}"
+					class="label label-${empty fault.alert.comment ? 'warning' : 'info'}" data-toggle="modal"
+					data-target="#update">${empty fault.alert.comment ? '处理' : '详情'}</a></td>
 			</tr>
 		</c:forEach>
 	</table>
 	<tt:page page="${faults}" form="#query" />
+	<div id="update" class="modal fade">
+		<div class="modal-dialog">
+			<div class="modal-content panel-default"></div>
+		</div>
+	</div>
 </tt:frame>

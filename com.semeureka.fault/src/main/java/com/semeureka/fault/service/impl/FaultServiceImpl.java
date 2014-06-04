@@ -27,4 +27,14 @@ public class FaultServiceImpl implements FaultService {
 	public Page<Fault> findAll(Fault example, Pageable pageable) {
 		return faultRepository.findAll(byExample(example), pageable);
 	}
+
+	@Override
+	public Fault findOne(Integer id) {
+		return faultRepository.findOne(id);
+	}
+
+	@Override
+	public void update(Fault fault) {
+		faultRepository.save(fault);
+	}
 }
