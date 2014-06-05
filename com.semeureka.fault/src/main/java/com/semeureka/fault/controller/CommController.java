@@ -28,6 +28,7 @@ public class CommController {
 		model.addAttribute("clientStart", commSupport.isClientStart());
 		model.addAttribute("serial", commSupport.getSerial());
 		model.addAttribute("serialStart", commSupport.isSerialStart());
+		model.addAttribute("project", commSupport.getProject());
 		model.addAttribute("commPosts", commSupport.getCommPorts());
 		return "/comm/comm";
 	}
@@ -54,7 +55,7 @@ public class CommController {
 
 	@RequestMapping(value = "/{service}/start", method = RequestMethod.POST)
 	public String startService(@PathVariable String service, @RequestParam SocketAddress address,
-			RedirectAttributes model) {
+			@RequestParam(required = false) Integer project, RedirectAttributes model) {
 		try {
 			if ("server".equals(service)) {
 				commSupport.setServerAddress(address);
@@ -63,6 +64,7 @@ public class CommController {
 			} else if ("client".equals(service)) {
 				commSupport.setClientAddress(address);
 				commSupport.setClientStart(true);
+				commSupport.setProject(project);
 				commSupport.toggleClient();
 			} else if ("serial".equals(service)) {
 				commSupport.setSerialAddress(address);

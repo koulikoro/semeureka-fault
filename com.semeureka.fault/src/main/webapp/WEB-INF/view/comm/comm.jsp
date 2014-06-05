@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 <%@ taglib tagdir="/WEB-INF/tags" prefix="tt"%>
 <tt:frame>
 	<ul class="nav nav-tabs">
@@ -37,8 +38,8 @@
 					<div class="col-sm-4">
 						<c:set var="address" value="${server.defaultLocalAddress}" />
 						<input type="text" name="address" ${server.active ? 'readonly' : '' }
-							value="${address.hostName}${empty address ? '' : ':'}${address.port}" class="form-control"
-							placeholder="127.0.0.1:8811" required pattern="^\d+\.\d+\.\d+\.\d+:\d+$">
+							value="${address.address.hostAddress}${empty address ? '' : ':'}${address.port}"
+							class="form-control" placeholder="127.0.0.1:8811" required pattern="^\d+\.\d+\.\d+\.\d+:\d+$">
 					</div>
 				</div>
 				<div class="form-group">
@@ -80,8 +81,13 @@
 					<div class="col-sm-4">
 						<c:set var="address" value="${client.defaultRemoteAddress}" />
 						<input type="text" name="address" ${client.active ? 'readonly' : '' }
-							value="${address.hostName}${empty address ? '' : ':'}${address.port}" class="form-control"
-							placeholder="127.0.0.1:8811" required pattern="^\d+\.\d+\.\d+\.\d+:\d+$">
+							value="${address.address.hostAddress}${empty address ? '' : ':'}${address.port}"
+							class="form-control" placeholder="127.0.0.1:8811" required pattern="^\d+\.\d+\.\d+\.\d+:\d+$">
+					</div>
+					<label class="col-sm-2 control-label">项目编号</label>
+					<div class="col-sm-4">
+						<input type="text" name="project" ${client.active ? 'readonly' : '' } value="${project}"
+							class="form-control" required pattern="^\d+$">
 					</div>
 				</div>
 				<div class="form-group">
