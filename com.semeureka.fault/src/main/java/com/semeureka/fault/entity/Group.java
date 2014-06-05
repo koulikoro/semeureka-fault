@@ -18,12 +18,14 @@ import javax.persistence.MapKey;
 import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.semeureka.fault.entity.Device.Phase;
+import com.semeureka.frame.misc.ByteUtil;
 
 @Entity
 @Table(name = "T_FAULT_GROUP")
@@ -39,7 +41,9 @@ public class Group implements Serializable {
 	@GeneratedValue
 	private Integer id;
 	@Column(name = "GROUP_HOSTCODE")
-	private String hostCode;
+	private byte[] hostCode;
+	@Transient
+	private String hostCodeHex;
 	@Column(name = "GROUP_TYPE")
 	private GroupType groupType;
 	@Column(name = "GROUP_NUMBER")
@@ -68,12 +72,25 @@ public class Group implements Serializable {
 		this.id = id;
 	}
 
-	public String getHostCode() {
+	public byte[] getHostCode() {
 		return hostCode;
 	}
 
-	public void setHostCode(String hostCode) {
+	public void setHostCode(byte[] hostCode) {
 		this.hostCode = hostCode;
+		this.hostCodeHex = null;
+	}
+
+	public String getHostCodeHex() {
+		if (hostCodeHex == null && hostCode != null) {
+			hostCodeHex = ByteUtil.toHex(hostCode);
+		}
+		return hostCodeHex;
+	}
+
+	public void setHostCodeHex(String hostCodeHex) {
+		this.hostCode = ByteUtil.toBytes(hostCodeHex);
+		this.hostCodeHex = hostCodeHex;
 	}
 
 	public GroupType getGroupType() {
@@ -168,10 +185,5 @@ public class Group implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
-
-	@Override
-	public String toString() {
-		return "Group [id=" + id + ", hostCode=" + hostCode + "]";
 	}
 }

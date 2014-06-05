@@ -15,7 +15,7 @@ public class DeviceServiceImpl implements DeviceService {
 	private DeviceRepository deviceRepository;
 
 	@Override
-	public Device findByCode(String code) {
+	public Device findByCode(byte[] code) {
 		return deviceRepository.findByCode(code);
 	}
 }

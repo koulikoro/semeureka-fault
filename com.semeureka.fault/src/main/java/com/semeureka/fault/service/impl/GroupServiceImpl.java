@@ -15,7 +15,6 @@ import com.semeureka.fault.entity.Group;
 import com.semeureka.fault.entity.Line;
 import com.semeureka.fault.repository.GroupRepository;
 import com.semeureka.fault.service.GroupService;
-import com.semeureka.frame.misc.IoBuffers;
 
 @Service("groupService")
 @Transactional
@@ -63,6 +62,6 @@ public class GroupServiceImpl implements GroupService {
 
 	@Override
 	public Group findByHostCode(byte[] hostCode) {
-		return groupRepository.findByHostCode(IoBuffers.hex(hostCode));
+		return groupRepository.findByHostCode(hostCode);
 	}
 }

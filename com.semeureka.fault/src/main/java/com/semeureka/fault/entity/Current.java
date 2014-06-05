@@ -29,12 +29,12 @@ public class Current implements Serializable {
 	private Integer value;
 	@Column(name = "CURRENT_TEMPERATURE")
 	private Integer temperature;
-	@Enumerated
-	@Column(name = "DEVICE_PHASE", nullable = false)
-	private Phase phase;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "GROUP_ID", nullable = false)
 	private Group group;
+	@Enumerated
+	@Column(name = "DEVICE_PHASE", nullable = false)
+	private Phase phase;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATE_TIME")
 	private Date createTime;
@@ -63,14 +63,6 @@ public class Current implements Serializable {
 		this.temperature = temperature;
 	}
 
-	public Phase getPhase() {
-		return phase;
-	}
-
-	public void setPhase(Phase phase) {
-		this.phase = phase;
-	}
-
 	public Group getGroup() {
 		return group;
 	}
@@ -79,11 +71,32 @@ public class Current implements Serializable {
 		this.group = group;
 	}
 
+	public Phase getPhase() {
+		return phase;
+	}
+
+	public void setPhase(Phase phase) {
+		this.phase = phase;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
 
 	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Current() {
+	}
+
+	public Current(Integer value, Integer temperature, Device device, Date createTime) {
+		this.value = value;
+		this.temperature = temperature;
+		if (device != null) {
+			this.group = device.getGroup();
+			this.phase = device.getPhase();
+		}
 		this.createTime = createTime;
 	}
 }

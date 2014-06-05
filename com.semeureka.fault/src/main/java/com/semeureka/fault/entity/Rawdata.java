@@ -14,9 +14,11 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.semeureka.fault.entity.Device.Phase;
+import com.semeureka.frame.misc.ByteUtil;
 
 @Entity
 @Table(name = "T_FAULT_RAWDATA")
@@ -27,6 +29,8 @@ public class Rawdata implements Serializable {
 	private Integer id;
 	@Column(name = "RAWDATA_CONTENT")
 	private byte[] content;
+	@Transient
+	private String contentHex;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "GROUP_ID")
 	private Group group;
@@ -51,6 +55,19 @@ public class Rawdata implements Serializable {
 
 	public void setContent(byte[] content) {
 		this.content = content;
+		this.contentHex = null;
+	}
+
+	public String getContentHex() {
+		if (contentHex == null && content != null) {
+			contentHex = ByteUtil.toHex(content);
+		}
+		return contentHex;
+	}
+
+	public void setContentHex(String contentHex) {
+		content = ByteUtil.toBytes(contentHex);
+		this.contentHex = contentHex;
 	}
 
 	public Group getGroup() {

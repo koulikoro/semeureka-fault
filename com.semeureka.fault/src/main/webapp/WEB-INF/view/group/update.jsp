@@ -52,7 +52,7 @@
 		<div class="form-group">
 			<label class="col-md-2 control-label">主机链路</label>
 			<div class="col-md-10">
-				<input type="text" name="hostCode" value="${group.hostCode}" class="form-control" required
+				<input type="text" name="hostCodeHex" value="${group.hostCodeHex}" class="form-control" required
 					pattern="^[0-9A-F]{4}|[0-9A-F]{12}$" />
 			</div>
 		</div>
@@ -63,7 +63,7 @@
 					<c:forEach items="${phases}" var="phase">
 						<div class="col-md-3">
 							<input type="hidden" name="devices[${phase}].id" value="${group.devices[phase].id}">
-							<input type="text" name="devices[${phase}].code" value="${group.devices[phase].code}"
+							<input type="text" name="devices[${phase}].codeHex" value="${group.devices[phase].codeHex}"
 								class="form-control device-code" pattern="^[0-9A-F]{4}$" notEqual=".device-code"
 								remote="${ctx}/device/contains?id=${group.id}" placeholder="${phase}相">
 						</div>

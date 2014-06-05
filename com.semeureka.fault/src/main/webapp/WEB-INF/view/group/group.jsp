@@ -75,7 +75,7 @@
 						<div class="form-group">
 							<label class="col-md-2 control-label">主机链路</label>
 							<div class="col-md-10">
-								<input type="text" name="hostCode" class="form-control" required
+								<input type="text" name="hostCodeHex" class="form-control" required
 									pattern="^[0-9A-F]{4}|[0-9A-F]{12}$" />
 							</div>
 						</div>
@@ -85,7 +85,7 @@
 								<div class="row">
 									<c:forEach items="${phases}" var="phase">
 										<div class="col-md-3">
-											<input type="text" name="devices[${phase}].code" class="form-control"
+											<input type="text" name="devices[${phase}].codeHex" class="form-control"
 												pattern="^[0-9A-F]{4}$" remote="${ctx}/device/contains" placeholder="${phase}相">
 										</div>
 									</c:forEach>

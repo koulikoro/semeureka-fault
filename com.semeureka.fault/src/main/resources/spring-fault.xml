@@ -5,6 +5,8 @@
 		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
 	<util:list id="observers">
 		<ref bean="rawdataService" />
+		<ref bean="currentService" />
+		<ref bean="voltageService" />
 	</util:list>
 	<bean id="clientHandler" class="com.semeureka.fault.comm.CommHandler">
 		<property name="observers" ref="observers" />

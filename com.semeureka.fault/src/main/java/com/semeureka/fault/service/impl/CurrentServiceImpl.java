@@ -2,6 +2,8 @@ package com.semeureka.fault.service.impl;
 
 import static com.semeureka.fault.repository.spec.CurrentSpecifications.byExample;
 
+import java.util.Observable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -12,15 +14,18 @@ import com.semeureka.fault.entity.Current;
 import com.semeureka.fault.repository.CurrentRepository;
 import com.semeureka.fault.service.CurrentService;
 
-@Service
+@Service("currentService")
 @Transactional
 public class CurrentServiceImpl implements CurrentService {
 	@Autowired
 	private CurrentRepository currentRepository;
 
 	@Override
-	public Current save(Current current) {
-		return currentRepository.save(current);
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Current) {
+			Current current = (Current) arg;
+			currentRepository.save(current);
+		}
 	}
 
 	@Override

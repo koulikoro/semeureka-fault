@@ -14,7 +14,7 @@ import com.semeureka.fault.entity.Voltage;
 import com.semeureka.fault.repository.VoltageRepository;
 import com.semeureka.fault.service.VoltageService;
 
-@Service
+@Service("voltageService")
 @Transactional
 public class VoltageServiceImpl implements VoltageService {
 	@Autowired

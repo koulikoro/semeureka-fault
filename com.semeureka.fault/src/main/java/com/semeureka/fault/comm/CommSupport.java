@@ -33,7 +33,7 @@ import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.semeureka.frame.misc.IoBuffers;
+import com.semeureka.frame.misc.ByteUtil;
 
 @Component
 @DependsOn("libraryPathRegister")
@@ -166,7 +166,7 @@ public class CommSupport {
 		buffer.putUnsignedShort(0x0001);
 		buffer.putUnsignedShort(project.toString().length());
 		buffer.put(project.toString().getBytes());
-		buffer.putUnsignedShort(IoBuffers.crc16(buffer, 0, buffer.position()));
+		buffer.putUnsignedShort(ByteUtil.crc16(buffer, 0, buffer.position()));
 		return buffer.flip();
 	}
 

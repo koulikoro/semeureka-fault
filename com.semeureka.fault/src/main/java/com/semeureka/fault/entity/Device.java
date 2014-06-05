@@ -11,11 +11,13 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.semeureka.frame.misc.ByteUtil;
 
 @Entity
 @Table(name = "T_FAULT_DEVICE")
@@ -31,7 +33,9 @@ public class Device implements Serializable {
 	@GeneratedValue
 	private Integer id;
 	@Column(name = "DEVICE_CODE", unique = true)
-	private String code;
+	private byte[] code;
+	@Transient
+	private String codeHex;
 	@Enumerated
 	@Column(name = "DEVICE_PHASE", updatable = false, nullable = false)
 	private Phase phase;
@@ -47,12 +51,25 @@ public class Device implements Serializable {
 		this.id = id;
 	}
 
-	public String getCode() {
+	public byte[] getCode() {
 		return code;
 	}
 
-	public void setCode(String code) {
+	public void setCode(byte[] code) {
 		this.code = code;
+		this.codeHex = null;
+	}
+
+	public String getCodeHex() {
+		if (codeHex == null && code != null) {
+			codeHex = ByteUtil.toHex(code);
+		}
+		return codeHex;
+	}
+
+	public void setCodeHex(String codeHex) {
+		this.code = ByteUtil.toBytes(codeHex);
+		this.codeHex = codeHex;
 	}
 
 	public Phase getPhase() {

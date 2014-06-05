@@ -27,12 +27,12 @@ public class Voltage implements Serializable {
 	private Integer id;
 	@Column(name = "VOLTAGE_VALUE")
 	private Integer value;
-	@Enumerated
-	@Column(name = "DEVICE_PHASE", nullable = false)
-	private Phase phase;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "GROUP_ID", nullable = false)
 	private Group group;
+	@Enumerated
+	@Column(name = "DEVICE_PHASE", nullable = false)
+	private Phase phase;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATE_TIME")
 	private Date createTime;
@@ -53,14 +53,6 @@ public class Voltage implements Serializable {
 		this.value = value;
 	}
 
-	public Phase getPhase() {
-		return phase;
-	}
-
-	public void setPhase(Phase phase) {
-		this.phase = phase;
-	}
-
 	public Group getGroup() {
 		return group;
 	}
@@ -69,11 +61,31 @@ public class Voltage implements Serializable {
 		this.group = group;
 	}
 
+	public Phase getPhase() {
+		return phase;
+	}
+
+	public void setPhase(Phase phase) {
+		this.phase = phase;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
 
 	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Voltage() {
+	}
+
+	public Voltage(Integer value, Device device, Date createTime) {
+		this.value = value;
+		if (device != null) {
+			this.group = device.getGroup();
+			this.phase = device.getPhase();
+		}
 		this.createTime = createTime;
 	}
 }
