@@ -24,4 +24,6 @@ public interface GroupRepository extends JpaRepository<Group, Integer>,
 
 	@QueryHints(@QueryHint(name = "org.hibernate.cacheable", value = "true"))
 	public List<Group> findByLine(Line line);
+
+	public Group findByHostCode(String hostCode);
 }

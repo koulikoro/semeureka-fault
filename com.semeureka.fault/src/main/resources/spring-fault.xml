@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
+	<util:list id="observers">
+		<ref bean="rawdataService" />
+	</util:list>
+	<bean id="clientHandler" class="com.semeureka.fault.comm.CommHandler">
+		<property name="observers" ref="observers" />
+		<property name="messageDecoders">
+			<list>
+				<ref bean="decoderGprs" />
+			</list>
+		</property>
+	</bean>
+	<bean id="serverHandler" class="com.semeureka.fault.comm.CommHandler">
+		<property name="observers" ref="observers" />
+		<property name="messageDecoders">
+			<list>
+				<ref bean="decoderGprs" />
+			</list>
+		</property>
+	</bean>
+</beans>

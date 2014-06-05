@@ -17,4 +17,6 @@ public interface GroupService {
 	List<Group> findAll(Group group);
 
 	List<Group> findByLine(Line line);
+
+	Group findByHostCode(byte[] hostCode);
 }

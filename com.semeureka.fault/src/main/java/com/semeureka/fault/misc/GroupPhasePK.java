@@ -1,4 +1,4 @@
-package com.semeureka.fault.entity;
+package com.semeureka.fault.misc;
 
 import java.io.Serializable;
 
@@ -9,9 +9,10 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import com.semeureka.fault.entity.Device.Phase;
+import com.semeureka.fault.entity.Group;
 
 @Embeddable
-public class GroupPhase implements Serializable {
+public class GroupPhasePK implements Serializable {
 	@ManyToOne
 	@JoinColumn(name = "GROUP_ID", updatable = false, nullable = false)
 	private Group group;
@@ -52,7 +53,7 @@ public class GroupPhase implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		GroupPhase other = (GroupPhase) obj;
+		GroupPhasePK other = (GroupPhasePK) obj;
 		if (group == null) {
 			if (other.group != null)
 				return false;

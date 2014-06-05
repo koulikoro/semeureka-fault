@@ -2,6 +2,8 @@ package com.semeureka.fault.service.impl;
 
 import static com.semeureka.fault.repository.spec.VoltageSpecifications.byExample;
 
+import java.util.Observable;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +21,11 @@ public class VoltageServiceImpl implements VoltageService {
 	private VoltageRepository voltageRepository;
 
 	@Override
-	public Voltage save(Voltage voltage) {
-		return voltageRepository.save(voltage);
+	public void update(Observable o, Object arg) {
+		if (arg instanceof Voltage) {
+			Voltage voltage = (Voltage) arg;
+			voltageRepository.save(voltage);
+		}
 	}
 
 	@Override

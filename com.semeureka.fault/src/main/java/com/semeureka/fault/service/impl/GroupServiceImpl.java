@@ -15,6 +15,7 @@ import com.semeureka.fault.entity.Group;
 import com.semeureka.fault.entity.Line;
 import com.semeureka.fault.repository.GroupRepository;
 import com.semeureka.fault.service.GroupService;
+import com.semeureka.frame.misc.IoBuffers;
 
 @Service("groupService")
 @Transactional
@@ -54,9 +55,14 @@ public class GroupServiceImpl implements GroupService {
 	public List<Group> findAll(Group example) {
 		return groupRepository.findAll(byExample(example));
 	}
-	
+
 	@Override
 	public List<Group> findByLine(Line line) {
 		return groupRepository.findByLine(line);
+	}
+
+	@Override
+	public Group findByHostCode(byte[] hostCode) {
+		return groupRepository.findByHostCode(IoBuffers.hex(hostCode));
 	}
 }

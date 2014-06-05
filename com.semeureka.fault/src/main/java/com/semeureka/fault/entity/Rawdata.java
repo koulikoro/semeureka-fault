@@ -25,14 +25,14 @@ public class Rawdata implements Serializable {
 	@Id
 	@GeneratedValue
 	private Integer id;
-	@Column(name = "RAWDATA_VALUE")
-	private byte[] value;
-	@Enumerated
-	@Column(name = "DEVICE_PHASE", nullable = false)
-	private Phase phase;
+	@Column(name = "RAWDATA_CONTENT")
+	private byte[] content;
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "GROUP_ID", nullable = false)
+	@JoinColumn(name = "GROUP_ID")
 	private Group group;
+	@Enumerated
+	@Column(name = "DEVICE_PHASE")
+	private Phase phase;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATE_TIME")
 	private Date createTime;
@@ -45,20 +45,12 @@ public class Rawdata implements Serializable {
 		this.id = id;
 	}
 
-	public byte[] getValue() {
-		return value;
+	public byte[] getContent() {
+		return content;
 	}
 
-	public void setValue(byte[] value) {
-		this.value = value;
-	}
-
-	public Phase getPhase() {
-		return phase;
-	}
-
-	public void setPhase(Phase phase) {
-		this.phase = phase;
+	public void setContent(byte[] content) {
+		this.content = content;
 	}
 
 	public Group getGroup() {
@@ -69,11 +61,29 @@ public class Rawdata implements Serializable {
 		this.group = group;
 	}
 
+	public Phase getPhase() {
+		return phase;
+	}
+
+	public void setPhase(Phase phase) {
+		this.phase = phase;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
 
 	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Rawdata() {
+	}
+
+	public Rawdata(byte[] content, Group group, Phase phase, Date createTime) {
+		this.content = content;
+		this.group = group;
+		this.phase = phase;
 		this.createTime = createTime;
 	}
 }

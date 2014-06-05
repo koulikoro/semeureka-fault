@@ -19,19 +19,21 @@ import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.future.ConnectFuture;
 import org.apache.mina.core.service.IoAcceptor;
 import org.apache.mina.core.service.IoConnector;
-import org.apache.mina.core.service.IoHandlerAdapter;
+import org.apache.mina.core.service.IoHandler;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.transport.serial.SerialConnector;
 import org.apache.mina.transport.socket.nio.NioSocketAcceptor;
 import org.apache.mina.transport.socket.nio.NioSocketConnector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.semeureka.frame.misc.CrcUtils;
+import com.semeureka.frame.misc.IoBuffers;
 
 @Component
 @DependsOn("libraryPathRegister")
@@ -44,6 +46,12 @@ public class CommSupport {
 	private boolean clientStart;
 	private boolean serialStart;
 	private Integer project;
+	@Autowired
+	@Qualifier("serverHandler")
+	private IoHandler serverHandler;
+	@Autowired
+	@Qualifier("clientHandler")
+	private IoHandler clientHandler;
 
 	@Value("${fault.server.address}")
 	public void setServerAddress(SocketAddress serverAddress) {
@@ -115,7 +123,7 @@ public class CommSupport {
 	@PostConstruct
 	public synchronized void toggleServer() throws IOException {
 		if (serverStart && !server.isActive()) {
-			server.setHandler(new IoHandlerAdapter());
+			server.setHandler(serverHandler);
 			server.bind();
 			logger.info("Start server {} success", server.getDefaultLocalAddress());
 		} else if (!serverStart && server.isActive()) {
@@ -127,7 +135,7 @@ public class CommSupport {
 	@PostConstruct
 	public synchronized void toggleClient() throws IOException {
 		if (clientStart && !client.isActive()) {
-			client.setHandler(new IoHandlerAdapter());
+			client.setHandler(clientHandler);
 			ConnectFuture connect = client.connect().awaitUninterruptibly();
 			if (!connect.isConnected()) {
 				throw new ConnectException("Connection timed out: connect");
@@ -158,14 +166,14 @@ public class CommSupport {
 		buffer.putUnsignedShort(0x0001);
 		buffer.putUnsignedShort(project.toString().length());
 		buffer.put(project.toString().getBytes());
-		buffer.putUnsignedShort(CrcUtils.modbus(buffer, 0, buffer.position()));
+		buffer.putUnsignedShort(IoBuffers.crc16(buffer, 0, buffer.position()));
 		return buffer.flip();
 	}
 
 	@PostConstruct
 	public synchronized void toggleSerial() throws IOException {
 		if (serialStart && !serial.isActive()) {
-			serial.setHandler(new IoHandlerAdapter());
+			serial.setHandler(new CommHandler());
 			ConnectFuture connect = serial.connect().awaitUninterruptibly();
 			if (!connect.isConnected()) {
 				throw new ConnectException("Connection timed out: connect");
