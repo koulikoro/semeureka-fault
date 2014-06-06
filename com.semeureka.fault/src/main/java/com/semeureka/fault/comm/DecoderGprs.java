@@ -20,7 +20,9 @@ import com.semeureka.fault.entity.Rawdata;
 import com.semeureka.fault.entity.Voltage;
 import com.semeureka.fault.service.DeviceService;
 import com.semeureka.fault.service.GroupService;
+import com.semeureka.frame.entity.Alert;
 import com.semeureka.frame.misc.ByteUtil;
+import com.semeureka.frame.service.AlertService;
 
 @Component
 public class DecoderGprs extends MessageDecoderAdapter {
@@ -29,6 +31,8 @@ public class DecoderGprs extends MessageDecoderAdapter {
 	private GroupService groupService;
 	@Autowired
 	private DeviceService deviceService;
+	@Autowired
+	private AlertService alertService;
 
 	@Override
 	public MessageDecoderResult decodable(IoSession session, IoBuffer in) {
@@ -60,7 +64,11 @@ public class DecoderGprs extends MessageDecoderAdapter {
 		Group group = groupService.findByHostCode(hostCode);
 		Rawdata rawdata = new Rawdata(content, group, Phase.M, new Date());
 		out.write(rawdata);
-		decodeRawdata(session, rawdata, out);
+		if (group != null) {
+			decodeRawdata(session, rawdata, out);
+		} else {
+			alertService.save(new Alert("未注册的设备：0x" + ByteUtil.toHex(hostCode), "warning"));
+		}
 		return OK; // 返回前一定要消耗掉完整报文
 	}
 
