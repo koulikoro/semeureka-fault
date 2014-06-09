@@ -31,12 +31,12 @@ public class Warn implements Serializable {
 	private Integer id;
 	@Column(name = "WARN_TYPE")
 	private WarnType warnType;
-	@Enumerated
-	@Column(name = "DEVICE_PHASE", nullable = false)
-	private Phase phase;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "GROUP_ID", nullable = false)
 	private Group group;
+	@Enumerated
+	@Column(name = "DEVICE_PHASE", nullable = false)
+	private Phase phase;
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name = "CREATE_TIME")
 	private Date createTime;
@@ -57,14 +57,6 @@ public class Warn implements Serializable {
 		this.warnType = warnType;
 	}
 
-	public Phase getPhase() {
-		return phase;
-	}
-
-	public void setPhase(Phase phase) {
-		this.phase = phase;
-	}
-
 	public Group getGroup() {
 		return group;
 	}
@@ -73,11 +65,32 @@ public class Warn implements Serializable {
 		this.group = group;
 	}
 
+	public Phase getPhase() {
+		return phase;
+	}
+
+	public void setPhase(Phase phase) {
+		this.phase = phase;
+	}
+
 	public Date getCreateTime() {
 		return createTime;
 	}
 
 	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Warn() {
+	}
+
+	public Warn(WarnType warnType, Device device, Date createTime) {
+		super();
+		this.warnType = warnType;
+		if (device != null) {
+			this.group = device.getGroup();
+			this.phase = device.getPhase();
+		}
 		this.createTime = createTime;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
@@ -22,6 +21,8 @@ import com.semeureka.fault.entity.Device.Phase;
 import com.semeureka.fault.entity.Group;
 import com.semeureka.fault.entity.Rawdata;
 import com.semeureka.fault.entity.Voltage;
+import com.semeureka.fault.entity.Warn;
+import com.semeureka.fault.entity.Warn.WarnType;
 import com.semeureka.fault.service.DeviceService;
 import com.semeureka.fault.service.GroupService;
 import com.semeureka.frame.entity.Alert;
@@ -129,6 +130,7 @@ public class DecoderGprs extends MessageDecoderAdapter {
 		if (rawdata.getContent().length > 25) { // 非注册报文
 			IoBuffer in = IoBuffer.wrap(rawdata.getContent());
 			in.skip(23); // 跳过报头
+			Date createTime = rawdata.getCreateTime();
 			while (in.remaining() >= 7) { // 最小报文内容长度 + 校验 + 结束标志
 				byte[] code = ByteUtil.copyBytes(in, 2);
 				int type = in.getUnsigned(); // 数据类型
@@ -136,7 +138,7 @@ public class DecoderGprs extends MessageDecoderAdapter {
 				switch (type) {
 				case 0xDA: {
 					Integer value = in.getUnsignedShort();
-					out.write(new Voltage(value, device, rawdata.getCreateTime()));
+					out.write(new Voltage(value, device, createTime));
 					break;
 				}
 				case 0x90: {
@@ -145,7 +147,17 @@ public class DecoderGprs extends MessageDecoderAdapter {
 						value += in.getUnsignedShort();
 					}
 					Integer temperature = in.getUnsignedShort();
-					out.write(new Current(value >> 3, temperature, device, rawdata.getCreateTime()));
+					out.write(new Current(value >> 3, temperature, device, createTime));
+					break;
+				}
+				case 0x8F: {
+					in.skip(17);
+					out.write(new Warn(WarnType.EARTH, device, createTime));
+					break;
+				}
+				case 0xDF: {
+					in.skip(17);
+					out.write(new Warn(WarnType.SHORT, device, createTime));
 					break;
 				}
 				default:
