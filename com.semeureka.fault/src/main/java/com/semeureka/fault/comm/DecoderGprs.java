@@ -1,7 +1,11 @@
 package com.semeureka.fault.comm;
 
+import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.mina.core.buffer.IoBuffer;
 import org.apache.mina.core.session.IoSession;
 import org.apache.mina.filter.codec.ProtocolDecoderOutput;
@@ -64,6 +68,55 @@ public class DecoderGprs extends MessageDecoderAdapter {
 		Group group = groupService.findByHostCode(hostCode);
 		Rawdata rawdata = new Rawdata(content, group, Phase.M, new Date());
 		out.write(rawdata);
+		if (group == null) { // 自动添加未注册设备
+			if (content.length == 88) {
+				group = new Group();
+				group.setLocation(ByteUtil.toHex(hostCode));
+				group.setHostCode(hostCode);
+				Map<Phase, Device> devices = new HashMap<Device.Phase, Device>();
+				byte[] codeM = Arrays.copyOfRange(content, 13, 15);
+				Device deviceM = new Device();
+				deviceM.setCode(codeM);
+				devices.put(Phase.M, deviceM);
+				byte[] codeA = Arrays.copyOfRange(content, 23, 25);
+				Device deviceA = new Device();
+				deviceA.setCode(codeA);
+				devices.put(Phase.A, deviceA);
+				byte[] codeB = Arrays.copyOfRange(content, 44, 46);
+				Device deviceB = new Device();
+				deviceB.setCode(codeB);
+				devices.put(Phase.B, deviceB);
+				byte[] codeC = Arrays.copyOfRange(content, 65, 67);
+				Device deviceC = new Device();
+				deviceC.setCode(codeC);
+				devices.put(Phase.C, deviceC);
+				group.setDevices(devices);
+				groupService.save(group);
+			} else if (content.length == 45) {
+				group = new Group();
+				group.setLocation(ByteUtil.toHex(hostCode));
+				group.setHostCode(hostCode);
+				Map<Phase, Device> devices = new HashMap<Device.Phase, Device>();
+				byte[] codeM = Arrays.copyOfRange(content, 23, 25);
+				Device deviceM = new Device();
+				deviceM.setCode(codeM);
+				devices.put(Phase.M, deviceM);
+				byte[] codeA = Arrays.copyOfRange(content, 28, 30);
+				Device deviceA = new Device();
+				deviceA.setCode(codeA);
+				devices.put(Phase.A, deviceA);
+				byte[] codeB = Arrays.copyOfRange(content, 33, 35);
+				Device deviceB = new Device();
+				deviceB.setCode(codeB);
+				devices.put(Phase.B, deviceB);
+				byte[] codeC = Arrays.copyOfRange(content, 38, 40);
+				Device deviceC = new Device();
+				deviceC.setCode(codeC);
+				devices.put(Phase.C, deviceC);
+				group.setDevices(devices);
+				groupService.save(group);
+			}
+		}
 		if (group != null) {
 			decodeRawdata(session, rawdata, out);
 		} else {

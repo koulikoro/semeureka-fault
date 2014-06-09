@@ -22,7 +22,7 @@
 				<td>${voltage.group.location}</td>
 				<td>${voltage.group.number}</td>
 				<td>${voltage.phase}</td>
-				<td>${voltage.value}</td>
+				<td><fmt:formatNumber value="${voltage.value / 1000}" pattern="0.0" /></td>
 				<td><fmt:formatDate value="${voltage.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 			</tr>
 		</c:forEach>

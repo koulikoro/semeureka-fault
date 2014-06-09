@@ -23,8 +23,8 @@
 				<td>${current.group.location}</td>
 				<td>${current.group.number}</td>
 				<td>${current.phase}</td>
-				<td>${current.value}</td>
-				<td>${current.temperature}</td>
+				<td>${current.value / 10}</td>
+				<td>${current.temperature / 10}</td>
 				<td><fmt:formatDate value="${current.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
 			</tr>
 		</c:forEach>
