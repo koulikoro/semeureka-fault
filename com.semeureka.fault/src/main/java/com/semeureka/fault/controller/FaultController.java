@@ -48,4 +48,9 @@ public class FaultController {
 		faultService.update(fault);
 		return "redirect:/fault";
 	}
+
+	@RequestMapping(value = "/svg")
+	public String svg() {
+		return "/fault/svg";
+	}
 }
