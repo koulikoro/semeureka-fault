@@ -1,0 +1,11 @@
+.info {
+	fill: green
+}
+
+.warning {
+	fill: yellow;
+}
+
+.error {
+	fill: red
+}

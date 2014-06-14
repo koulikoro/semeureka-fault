@@ -1,7 +1,10 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN"
-	"http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" >
-	<circle cx="0" cy="0" r="40" stroke="black" stroke-width="2" fill="red" />
-	<circle cx="100" cy="400" r="80" stroke="black" stroke-width="2" fill="yellow" />
+<?xml-stylesheet href="svg.css" type="text/css"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg id="svg2" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+	<script xlink:href="svg.js"/>
+	<circle cx="-10" cy="-60" r="40" stroke="black" stroke-width="2" fill="gray" />
+	<circle id="r80" cx="100" cy="400" r="80" stroke="black" stroke-width="2" class="error" />
+	<circle id="r120" cx="-100" cy="200" r="120" stroke="black" stroke-width="2" class="info" />
+	<circle cx="-200" cy="300" r="60" stroke="black" stroke-width="2" class="warning"/>
 </svg>
